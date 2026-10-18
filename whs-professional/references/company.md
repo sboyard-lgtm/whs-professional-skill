@@ -277,7 +277,7 @@ recordable injuries (TRI) = Fatality + LTI + RWI + MTI, and
 TRIFR = TRI / hours worked × 1,000,000. RWI (restricted work injury) is
 recordable and is counted in the numerator. RWI is a US OSHA-origin
 recordability concept adopted here as a documented organisational convention;
-under the (now-withdrawn) AS 1885.1 the AU convention was
+under the (superseded) AS 1885.1 the AU convention was
 TRIFR = Fatality + LTI + MTI.
 
 **Statistical inclusion — the Operational Control Rule**: an incident is
@@ -462,7 +462,7 @@ this file.*
 For consultants or multi-divisional groups maintaining several organisation
 profiles, two primary patterns (two further variants are documented in
 `ADAPTING.md` in the source repository,
-github.com/whosneet/whs-professional-skill):
+github.com/arrley/whs-professional-skill):
 
 1. **Claude Project knowledge (recommended for claude.ai)** — keep this file
    generic (or as the fictional worked example) and hold each organisation's
@@ -471,7 +471,7 @@ github.com/whosneet/whs-professional-skill):
 2. **Profile files (for packaged/repo use)** — keep one file per client
    (`company-<client>.md`) alongside this file and copy or symlink the active
    one to `company.md` before packaging. The full workflow is in `ADAPTING.md`
-   in the source repository (github.com/whosneet/whs-professional-skill).
+   in the source repository (github.com/arrley/whs-professional-skill).
 
 Whichever pattern is used, treat the active profile as the single source of
 truth for risk matrix values, severity classifications, document codes, and

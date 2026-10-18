@@ -10,16 +10,16 @@
       "name": "whs-professional",
       "source": {
         "source": "github",
-        "repo": "whosneet/whs-professional-skill",
+        "repo": "arrley/whs-professional-skill",
         "ref": "main"
       },
       "description": "Turns Claude into an experienced WHS/OHS professional calibrated to Australian and New Zealand regulatory frameworks. Covers incident investigation (ICAM, 5-Why), risk assessments, legislation, ISO 45001, psychosocial hazards, and more.",
-      "version": "1.8.0",
+      "version": "1.9.1",
       "author": {
         "name": "Neet Singh"
       },
-      "homepage": "https://github.com/whosneet/whs-professional-skill",
-      "repository": "https://github.com/whosneet/whs-professional-skill",
+      "homepage": "https://github.com/arrley/whs-professional-skill",
+      "repository": "https://github.com/arrley/whs-professional-skill",
       "license": "CC-BY-SA-4.0",
       "keywords": ["whs", "ohs", "ehs", "safety", "workplace", "australia", "new-zealand", "health-safety", "incident-investigation", "risk-assessment"],
       "category": "professional"
