@@ -68,10 +68,11 @@ Use this option if you access Claude through a web browser at
 skills attach to your Claude account, so a single claude.ai upload makes the
 skill available across web, Desktop, and Cowork sessions.
 
-> For the bundled calculator (`scripts/frequency_rates.py`) to run on these
-> surfaces, code execution (the analysis tool) must be enabled in your
-> settings. Without it the skill still works — it shows its arithmetic in
-> full and flags figures for verification instead (see SKILL.md §11).
+> For the bundled calculators (`scripts/frequency_rates.py` and
+> `scripts/rate_confidence.py`) to run on these surfaces, code execution (the
+> analysis tool) must be enabled in your settings. Without it the skill still
+> works — it shows its arithmetic in full and flags figures for verification
+> instead (see SKILL.md §11).
 
 The skill installs as a single packaged archive — a `.zip` of the skill
 folder. Release assets also include a `.skill` copy: it is the same ZIP
@@ -129,7 +130,7 @@ Open Claude Code and paste the following into the message box, then press
 **Enter**:
 
 ```
-/plugin marketplace add whosneet/whs-professional-skill
+/plugin marketplace add arrley/whs-professional-skill
 ```
 
 This tells Claude Code where to find the WHS Professional skill. **You only
@@ -172,10 +173,16 @@ The skill is updated periodically with regulatory corrections and new
 content. To pull the latest version, type:
 
 ```
-/plugin marketplace update
+/plugin marketplace update whs-professional
 ```
 
 That is all — no downloading or re-uploading required.
+
+> **The repository moved in October 2026** to
+> <https://github.com/arrley/whs-professional-skill>. If you added the
+> marketplace before then, it keeps working through GitHub's redirect. To
+> point it at the new address directly, type
+> `/plugin marketplace remove whs-professional`, then repeat Steps 1 and 2.
 
 ---
 
@@ -250,6 +257,11 @@ follows the same 1–10 structure as the interview.
   PEEPO information-gathering questions and likely contributing factors to test."
 - "Draft an executive summary for an ICAM report on a fatal electrical incident.
   Use the structure in the skill. I'll fill in the details."
+- "A worker died on our Brisbane site an hour ago. Police and the inspector
+  are on their way — what do we do in the next 24 hours, and who talks to
+  whom?"
+- "Code the contributing factors from this ICAM report to OFT codes and tell me
+  what the trend across our last 20 investigations says."
 
 **Legislative & regulatory**
 - "Explain the differences in industrial manslaughter exposure between NSW, QLD,
@@ -267,6 +279,10 @@ follows the same 1–10 structure as the interview.
   summer. Include WBGT thresholds and acclimatisation periods."
 - "Draft a toolbox talk on respirable crystalline silica for construction
   workers. 12 minutes, conversational, frontline language."
+- "Our MIG welders on mild steel measure 0.6 mg/m³ total fume. Are we
+  compliant after 1 December 2026, and what changes for manganese?"
+- "Staff are charging e-bikes in the loading dock. Write the charging and
+  storage rules and the emergency plan additions."
 
 **Risk & frameworks**
 - "Critical control verification approach for working at heights at a remote
@@ -286,6 +302,9 @@ follows the same 1–10 structure as the interview.
   maximum."
 - "Draft DAX patterns for a Power BI WHS dashboard that uses rolling 12-month
   hours anchored to the last closed period."
+- "Site B's TRIFR went from 8.1 to 11.4 this quarter on 44 recordables. Is
+  that a real change? Show the confidence intervals and a funnel plot against
+  our other sites."
 
 **Governance**
 - "WHS Management Plan structure for a $4M construction project (well above
@@ -293,6 +312,8 @@ follows the same 1–10 structure as the interview.
   Include PC duties, HRCW management, SWMS workflow, induction."
 - "Lessons Learnt register design that captures during projects, not just at
   close."
+- "Board paper on what the first industrial manslaughter prosecutions tell us
+  about officer exposure — use the Australian cases, with dates and outcomes."
 
 ---
 
@@ -310,14 +331,17 @@ whs-professional/                  # The Claude skill folder
 │   ├── 05-board-paper-extract-hipo-intelligence.md
 │   └── 06-hipo-intelligence-pack-page.md
 ├── scripts/
-│   └── frequency_rates.py         # Deterministic TRIFR/LTIFR/MTIFR/RWIFR/AIFR
-│                                  #   + severity calculator; rolling 12-month series
+│   ├── frequency_rates.py         # Deterministic TRIFR/LTIFR/MTIFR/RWIFR/AIFR
+│   │                              #   + severity calculator; rolling 12-month series
+│   └── rate_confidence.py         # Exact Poisson rate confidence intervals,
+│                                  #   two-rate comparison, funnel-plot limits
 ├── assets/
 │   └── penalty_units.json         # Penalty unit values by jurisdiction with
 │                                  #   effective dates, sources, verification dates
 └── references/
-    ├── INDEX.md                   # Keyword → file → section lookup across
-    │                              #   all reference files
+    ├── INDEX.md                   # Keyword → file → section → line-range lookup
+    │                              #   across all reference files, plus a
+    │                              #   generated section map (build_index.py)
     ├── company.md                 # ★ Your organisation's context (edit this)
     ├── adaptation-interview.md    # Guided ten-step setup: "adapt this skill
     │                              #   to my company" runs this interview
@@ -330,11 +354,18 @@ whs-professional/                  # The Claude skill folder
     │                              #   named safety science thinkers
     ├── investigation.md           # ICAM, 5-Why, bowtie, contributing factors,
     │                              #   cognitive biases
+    ├── investigation-advanced.md  # ICAM OFT codes, fatality first 24 hours /
+    │                              #   police / coroner, STEP, Tripod Beta, HFACS,
+    │                              #   investigation QA, restorative practice
     ├── hazards.md                 # Engineered stone, RCS, asbestos, construction,
     │                              #   D&A, heat, MHF, height, electrical/LOTO,
     │                              #   confined space, mobile plant, hazardous
     │                              #   chemicals, noise, vibration, plant safety,
     │                              #   manual tasks, fatigue
+    ├── hazards-specialist.md      # Lead, diesel particulate, welding fume,
+    │                              #   lithium-ion batteries, solar UV, abrasive
+    │                              #   blasting, formwork and falsework,
+    │                              #   occupational diving, Q fever and zoonoses
     ├── environment.md             # EHS environmental chapter — AU/NZ regulators,
     │                              #   ISO 14001, EPA notification, dangerous goods,
     │                              #   spills, waste, emissions, biodiversity,
@@ -349,6 +380,10 @@ whs-professional/                  # The Claude skill folder
     │                              #   Macondo, Pike River, Dreamworld, Whakaari,
     │                              #   Grenfell, Costa Concordia, Ranger Uranium,
     │                              #   Bhopal, Beirut Port; named-thinker framing
+    ├── case-studies-anz.md        # AU/NZ landmark cases: Wittenoom, Montara,
+    │                              #   Hazelwood, Beaconsfield, Cave Creek,
+    │                              #   Waterfall, first industrial manslaughter
+    │                              #   prosecutions
     ├── sector-regimes.md          # Mining, maritime, aviation, rail, healthcare
     │                              #   biosafety, defence, petrochemical,
     │                              #   telecommunications, agriculture, hospitality,
@@ -378,6 +413,9 @@ whs-professional/                  # The Claude skill folder
     ├── case-studies-everyday.md   # Forklift, manual handling, psychosocial,
     │                              #   electrical, slip/trip, chemical, fatigue
     │                              #   — everyday cases for training and ICAM
+    ├── case-studies-critical-risk.md  # Critical-risk cases: fragile roof fall,
+    │                              #   confined space would-be rescuer, LOTO
+    │                              #   failure, yard truck/pedestrian, heat illness
     ├── output-templates.md        # Safety alert, toolbox talk, advisory note,
     │                              #   investigation report, risk register,
     │                              #   bowtie, WHS strategy, RACI, annual plan,
@@ -385,7 +423,9 @@ whs-professional/                  # The Claude skill folder
     │                              #   report, AHRC evidence map, PTW, claim
     │                              #   review, hazard report templates
     ├── analytics.md               # KPIs, dashboards, Power BI patterns, board
-    │                              #   intelligence pack structure
+    │                              #   intelligence pack structure; confidence
+    │                              #   intervals, funnel plots, SPC; exposure
+    │                              #   normalisation; predictive analytics ethics
     ├── programs.md                # Program design, gamification, facilitator
     │                              #   frameworks, sustained campaign architecture
     └── glossary.md                # WHS acronyms and terminology
@@ -400,7 +440,10 @@ promptfooconfig.yaml               # Automated regression suite (npx promptfoo e
 LICENSE                            # Licence terms
 CHANGELOG.md                       # Version history of the skill
 scripts/
-└── validate.py                    # CI validation gate: frontmatter, refs, versions
+├── validate.py                    # CI validation gate: frontmatter, refs, versions,
+│                                  #   INDEX.md currency
+└── build_index.py                 # Stamps line ranges onto INDEX.md rows and
+                                   #   regenerates its section map
 .gitignore                         # Git ignore patterns (artefacts, IDE noise)
 .claude-plugin/
 ├── plugin.json                    # Claude Code plugin manifest (name, version)
@@ -482,31 +525,16 @@ This skill is not endorsed by or affiliated with Forge Works.
 ## Roadmap
 
 These topics are not currently covered (or only lightly covered) and represent
-opportunities for community contribution:
+opportunities for community contribution. Delivered items move to the
+"Recently added" sections below; the open items here were scoped for v1.9.0
+but not delivered:
 
-- **Case study expansion** — Wittenoom asbestos, Montara blowout (2009),
-  Hazelwood mine fire (2014), Beaconsfield rockfall (2006), Cave Creek
-  platform collapse (1995, NZ), Waterfall rail accident (2003), and the
-  first industrial-manslaughter prosecutions; plus everyday cases: fall
-  from height, confined space entry, LOTO failure, yard truck/pedestrian
-  interface, heat illness
 - **Sector deepening v3** — forestry, waste and recycling, electrical
   supply / utilities, renewables (including battery energy storage
   systems), commercial fishing, security, emergency services
-- **Hazard chapters** — lead (model WHS Regulations Part 7.2, including
-  the 2022 blood lead level reductions), diesel particulate matter,
-  welding fume depth, lithium-ion batteries, UV / solar exposure, abrasive
-  blasting, formwork and falsework, occupational diving, Q fever and
-  zoonoses
-- **Investigation depth** — ICAM organisational factor type (OFT) codes,
-  fatality first-24-hours / police / coroner protocol, STEP / Tripod /
-  HFACS methodologies, investigation quality assurance, restorative
-  practice after harm
 - **Compensation depth** — self-insurance licensing, cross-border
   state-of-connection rules, death benefits, NSW Dust Diseases scheme,
   Seacare
-- **Analytics depth** — predictive analytics ethics, confidence intervals
-  and funnel plots for rate comparison, exposure-based normalisation
 - **Additional templates** — induction checklist, HSC committee charter,
   audit report, management review agenda, emergency response plan,
   training needs analysis matrix
@@ -528,9 +556,46 @@ opportunities for community contribution:
   documented path is now the Claude Project knowledge pattern (see
   `ADAPTING.md` — closed in v1.6.0); an in-package file mechanism remains
   open for contribution
-- ~~**Utility scripts**~~ — ✓ closed in v1.6.0: `scripts/frequency_rates.py`
-  (frequency rate calculator) and `assets/penalty_units.json` (penalty unit
-  lookup); further calculators welcome
+- **Further calculators** — `scripts/frequency_rates.py` (v1.6.0) and
+  `scripts/rate_confidence.py` (v1.9.0) exist; other deterministic helpers
+  welcome
+
+### Recently added (v1.9.0 — October 2026)
+
+v1.9.0 is a content-depth release that closes four roadmap items:
+
+- ✓ **Case study expansion** — Wittenoom asbestos, Montara blowout (2009),
+  Hazelwood mine fire (2014), Beaconsfield rockfall (2006), Cave Creek
+  platform collapse (1995, NZ), Waterfall rail accident (2003), and the
+  first industrial-manslaughter prosecutions
+  (`references/case-studies-anz.md`); plus everyday critical-risk cases:
+  fall through a fragile roof, confined space entry and the would-be
+  rescuer, LOTO failure on a conveyor, yard truck / pedestrian interface,
+  exertional heat illness (`references/case-studies-critical-risk.md`)
+- ✓ **Hazard chapters** — lead (model WHS Regulations Part 7.2, the reduced
+  blood lead levels and the 2026 SWA consultation), diesel particulate
+  matter, welding fume depth (including the 1 December 2026 WEL changes),
+  lithium-ion batteries, UV / solar exposure, abrasive blasting, formwork
+  and falsework, occupational diving, Q fever and zoonoses
+  (`references/hazards-specialist.md`)
+- ✓ **Investigation depth** — ICAM organisational factor type (OFT) codes,
+  fatality first-24-hours / police / coroner protocol, STEP / Tripod Beta /
+  HFACS methodologies, investigation quality assurance, restorative
+  practice after harm (`references/investigation-advanced.md`)
+- ✓ **Analytics depth** — confidence intervals and funnel plots for rate
+  comparison, exposure-based normalisation, predictive analytics ethics
+  (`references/analytics.md` §9–§11). New calculator
+  `scripts/rate_confidence.py` (exact Poisson intervals, two-rate
+  comparison, funnel-plot limits; `--self-test`)
+- ✓ **Section-targeted loading** — `references/INDEX.md` rows now carry
+  line ranges, plus a generated section map covering every reference file
+  (`scripts/build_index.py`), so one grep gives an exact offset for a
+  targeted read; `scripts/validate.py` fails if either is stale
+- ✓ **Corpus currency audit** — fact-checking the new sections surfaced
+  stale or inconsistent statements in existing reference files, which were
+  corrected in the same release (detail in `CHANGELOG.md`)
+- ✓ **Regression evals** — six new evals (29–34) in `EVALS.md` and
+  `promptfooconfig.yaml` for facts reviewers corrected in the new content
 
 ### Recently added (v1.8.0 — August 2026)
 
